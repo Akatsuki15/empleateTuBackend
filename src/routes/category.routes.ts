@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { OfferController } from "../controllers/offer.controller";
-import { isAuthenticate } from "../middlewares/auth.middleware";
 
 
 const router = Router()
@@ -9,16 +8,16 @@ const router = Router()
 router.get('/', OfferController.getAll)
 router.get('/:id', OfferController.getById)
 //POST Añadir una oferta nueva localhost:3000/api/offerts/  {body}
-router.post('/', isAuthenticate, OfferController.create)
+router.post('/', OfferController.create)
 //DELETE Borrar una oferta localhost:3000/api/offerts/XXXX
-router.delete('/:id', isAuthenticate, OfferController.delete)
+router.delete('/:id', OfferController.delete)
 //PUT Modificar una oferta localhost:3000/api/offerts/XXXXXX  {body}
-router.put('/:id', isAuthenticate, OfferController.update)
+router.put('/:id', OfferController.update)
 
 //Calificamos una oferta x  {body}
-router.post('/:id/rate/', isAuthenticate, OfferController.rate)
+router.post('/:id/rate/', OfferController.rate)
 // Vemos que calificacion (total) se le ha dado a una oferta
-router.get('/:id/rate/', isAuthenticate, OfferController.getRate)
-router.get('/:id/myRate/', isAuthenticate, OfferController.getMyRate)
+router.get('/:id/rate/', OfferController.getRate)
+router.get('/:id/myRate/', OfferController.getMyRate)
 
 export default router

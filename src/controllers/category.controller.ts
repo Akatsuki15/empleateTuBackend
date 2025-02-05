@@ -60,7 +60,7 @@ export class OfferController{
         try {
             const id = Number.parseInt(req.params.id)
             const {value} = req.body
-            const userId = req.user.id
+            const userId = req.body.user.id
             
             await OfferService.rate(userId, id, value)
             res.status(200).json({message:'Offer rate successfully'})
@@ -83,7 +83,7 @@ export class OfferController{
     static async getMyRate(req: Request, res: Response, next: NextFunction){
         try {
             const id = Number.parseInt(req.params.id)
-            const idUser = req.user.id
+            const idUser = req.body.user.id
             
             const Offer = await OfferService.getMyRate(idUser, id)
             res.status(200).json({message:'Offer rate successfully', Offer})

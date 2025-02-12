@@ -7,14 +7,16 @@ import helmet from 'helmet'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import morgan from 'morgan'
 
 const app = express()
 //TODO limitar cors
 //cambiar la url cuando deployemos
 app.use(cors({
-    origin: '*',
+    origin: ['http://localhost:5173', 'https://empleatetufront-klch.onrender.com'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    credentials: true,
+    allowedHeaders: ['Content-type', 'Authorizacion']
 }))
 
 app.use(express.json())
@@ -22,6 +24,7 @@ app.use(express.json())
 app.use(helmet())
 app.use(compression())
 app.use(cookieParser())
+app.use(morgan('tiny'))
 
 const limiter = rateLimit({
     max: 100,

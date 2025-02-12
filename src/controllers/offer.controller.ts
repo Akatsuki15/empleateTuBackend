@@ -1,5 +1,6 @@
 import {Response, Request, NextFunction} from 'express'
 import { OfferService } from '../services/offer.service'
+import { HttpException } from "@/exceptions/httpException";
 
 export class OfferController{
     static async getById(req: Request, res: Response, next: NextFunction){
@@ -14,7 +15,8 @@ export class OfferController{
 
     static async getAll(req: Request, res: Response, next: NextFunction){
         try{
-            const offer = await OfferService.getAll()
+            const { title } = req.query;
+            const offer = await OfferService.getAll(title as string)
             res.status(200).json(offer)
         }catch(error){
             next(error)
@@ -60,8 +62,10 @@ export class OfferController{
         try {
             const id = Number.parseInt(req.params.id)
             const {value} = req.body
-            const userId = req.user.id
+            const userId = req.user?.id
             
+            if (!userId) throw new HttpException(400, "User creator ID is required");
+
             await OfferService.rate(userId, id, value)
             res.status(200).json({message:'Offer rate successfully'})
         } catch (error) {
@@ -83,7 +87,9 @@ export class OfferController{
     static async getMyRate(req: Request, res: Response, next: NextFunction){
         try {
             const id = Number.parseInt(req.params.id)
-            const idUser = req.user.id
+            const idUser = req.user?.id
+
+            if (!idUser) throw new HttpException(400, "User creator ID is required");
             
             const Offer = await OfferService.getMyRate(idUser, id)
             res.status(200).json({message:'Offer rate successfully', Offer})

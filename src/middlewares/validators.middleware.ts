@@ -10,3 +10,19 @@ export const loginValidation = [
     body('email').isEmail().withMessage('Invalid email'),
     body('password').notEmpty().withMessage('Password required')
 ]
+
+export const offerValidation = [
+    body('title').isLength({min: 4, max: 40}).withMessage('Titulo obligatorio minimo 4 caracteres'),
+    body('description').optional().isLength({max: 1000}),
+    body('email').isEmail().withMessage('Invalid email'),
+    body('published').isISO8601().withMessage('Formato de fecha incorrecto'),
+    body('expired').isISO8601().withMessage('Formato de fecha incorrecto')
+]
+
+export const categoryValidation = [
+    body('name').notEmpty().withMessage('Name required')
+]
+
+export const rateValidation = [
+    body('value').isInt({min: 0, max: 5}).toInt().withMessage('Value is required')
+]
